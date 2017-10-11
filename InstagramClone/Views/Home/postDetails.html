@@ -1,0 +1,76 @@
+<!-- 
+  Group information:
+  
+  Student 1:
+  
+  Tran Ngoc Phuong Dang (a.k.a Daniel). Student number: 7843618
+  
+  Student 2:
+  
+  Chi Hieu Tran (a.k.a Winson). Student number: 7822620
+  
+  Student 3:
+  
+  Saurav Bedi. Student number: 7832124 
+-->
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>Post details</title>
+    <link rel="icon" href="http://www.webdesignerdepot.com/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../css/postDetails.css">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Wellfleet">
+    <!-- Adds CSS -->
+    <link href="../css/instagramClone.css" rel="stylesheet" type="text/css">
+      
+    <!-- Adds JQuery -->
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script>
+      /*global $*/
+      function loadPage() {
+        var id = window.location.href.split("=")[1];
+        Promise.resolve()
+        .then(() => {
+          return $.post('/server/searchPost.php', {id: id});
+        })
+        .then((post) => {
+          setPostContent(post);
+        })
+          
+        function setPostContent(post) {
+          var postContent = post[0];
+          $('#status').html(postContent.status);
+          $('#hashTag').html(postContent.hashTag);
+          $('#image').attr("src","../img/instagram_img/" + postContent.image);
+          $('#likeCount').html(postContent.likeCount);
+          $('#feedbackCount').html(postContent.feedbackCount);
+        }
+      }
+      </script>
+  </head>
+
+<body onload="loadPage();">
+  <div id="w">
+    <div class="buffer">
+      <div id="header">
+        <h1><a id="status"></a></h1>
+        <h3><a id="hashTag"></a></h3>
+      </div>
+    </div>
+    <div id="imageContent">
+      <img id="image" src="">
+    </div>
+    
+    <div class="buffer">
+      <div id="stats">
+        <h2>
+          <img src="../img/icons/icon2.png" id="like"  height="15px" alt="Likes"> <a id="likeCount"></a>
+          <img style="margin-left:20px;" src="../img/icons/icon5.png" id="feedback"  height="15px" alt="Feedbacks"> <a id="feedbackCount"></a>
+        </h2>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

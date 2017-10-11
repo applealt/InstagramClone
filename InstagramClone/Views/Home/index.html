@@ -1,0 +1,337 @@
+﻿<!-- 
+  Group information:
+  
+  Student 1:
+  
+  Tran Ngoc Phuong Dang (a.k.a Daniel). Student number: 7843618
+  
+  Student 2:
+  
+  Chi Hieu Tran (a.k.a Winson). Student number: 7822620
+  
+  Student 3:
+  
+  Saurav Bedi. Student number: 7832124 
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Instagram Clone</title>
+    
+    <!-- Adds CSS -->
+    <link href="css/instagramClone.css" rel="stylesheet" type="text/css">
+    <link href="css/hide.css" rel="stylesheet" type="text/css" media="all"/>
+    
+    <!-- Adds JQuery -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+  
+    <!-- JavaScript to load the contents of the page -->
+    <script>
+      /*global $*/
+      // Function to load the contents of the page
+      function loadPage() {
+        Promise.resolve()
+        
+        //check session
+        //.then(function() {
+        //    return  $.post ('/server/session.php', 'type=checkSession');
+        // })
+        // .then(function(auth){
+        //    if(!auth.isValid) {
+        //          window.location.replace('loginAndRegistration.html');
+        //    } 
+        // })
+        .then(() => {
+            return $.post('Users/GetUserProfile');
+        })
+        .then((post) => {
+          setUserProfile(post);
+        })
+        .then(() => {
+            return $.post('Users/GetTopProfiles');
+        })
+        .then((posts) => {
+          setTopProfiles(posts);
+        });
+      }
+      
+      // Function to set the user profile
+        function setUserProfile(post) {
+            var userProfile = JSON.parse(post).Result;
+        $('#displayName').html(userProfile.DisplayName);
+        $('#profileImage').attr("src","img/profile_img/" + userProfile.ImageProfile);
+        $('#postCount').html(userProfile.PostsCount);
+        $('#followerCount').html(userProfile.FollowersCount);
+        $('#followingCount').html(userProfile.FollowingCount);
+        addUserGallery(userProfile, userProfile.PostsCount);
+        setUserGalleryContent(userProfile);
+      }
+      
+      // Function to add Gallery of user recent post to the Gallery Container
+      function addUserGallery(userProfile, postsCount) {
+        $('#galleryContainer').append('<div class="gallery">\
+          <div class="gallery_upper">\
+            <img src="" height="50px" class="profile" id="userProfileImage">\
+            <h4>\
+            <a href="/client/views/postList.html?id='+userProfile.Id+'" style="text-decoration: none; font-size: 25px;color: aliceblue;"><span id="userProfileUsername"></span></a> \
+              <img alt="verified" src="img/icons/icon4.png">\
+              <p id="userProfileFullName"></p>\
+            </h4>\
+          </div>\
+          <div id="postContainer0">\
+          </div>\
+        </div>');
+        if(postsCount <= 4) {
+          addUserPosts(userProfile, postsCount);
+        } else {
+          addUserPosts(userProfile, 4);
+        }
+      }
+      
+      // Function to set content of User Upper Gallery
+      function setUserGalleryContent(userProfile) {
+        $('#userProfileImage').attr("src","img/profile_img/" + userProfile.ImageProfile);
+        $('#userProfileUsername').html(userProfile.UserName);
+        $('#userProfileFullName').html(userProfile.DisplayName);
+      }
+      
+      // Function to add user Recent Posts html to Post Container
+      function addUserPosts(userProfile, postsCount) {
+        if(postsCount == 0) {
+          $('#postContainer0').append('<h4>There is no post to display</h4>');
+        } else {
+          for (var j = 0; j < postsCount; j++) {
+            $('#postContainer0').append('<div class="thumbnail">\
+                <a href="" id="link' + userProfile.Id + j + '">\
+                  <img src="" class="cards" id="thumbnail0' + userProfile.Id + j +'"/>\
+                </a>\
+                <h4>\
+                  <img src="img/icons/icon2.png" id="like0' + userProfile.Id + j +'"  height="15px" alt="Likes">\
+                  <i id="popularity0' + userProfile.Id + j +'"></i>\
+                  <img src="img/icons/icon5.png" id="feedback0' + userProfile.Id + j +'"  height="15px" alt="Feedbacks">\
+                  <i id="feedbackCount0' + userProfile.Id + j +'"></i>\
+                </h4>\
+                <p class="text_column" id="status0' + userProfile.Id + j +'"></p>\
+                <p class="tag" id="hastag0' + userProfile.Id + j +'"></p>\
+              </div>');
+            setPostsContent(userProfile.Id, j, true);
+          }
+        }
+      }
+      
+      // Function to set the top profiles
+        function setTopProfiles(posts) {
+            var topProfiles = JSON.parse(posts);
+        for (var i = 0; i < topProfiles.length; i++) {
+          addGallery(topProfiles, i);
+          setGalleryContent(topProfiles, i);
+        } 
+      }
+      
+      // Function to add Gallery html to the Gallery Container
+      function addGallery(topProfiles, i) {
+        $('#galleryContainer').append('<div class="gallery">\
+          <div class="gallery_upper">\
+            <img src="" height="50px" class="profile" id="topProfileImage' + i + '">\
+            <h4>\
+            <a href="/client/views/postList.html?id='+topProfiles[i].Id+'" style="text-decoration: none; font-size: 25px;color: aliceblue;"><span id="topProfileUsername' + i + '"></span></a> \
+              <img alt="verified" src="img/icons/icon4.png">\
+              <p id="topProfileFullName' + i + '"></p>\
+            </h4>\
+            <button id="follow'+ topProfiles[i].Id + '" >Follow</button>\
+          </div>\
+          <div id="postContainer' + topProfiles[i].Id + '">\
+          </div>\
+        </div>');
+        
+        $('#follow' + topProfiles[i].Id).attr('onclick','followerClick("follow' + topProfiles[i].Id + '", "' + topProfiles[i].Id + '")');
+        isFollow("follow" +topProfiles[i].Id , topProfiles[i].Id );
+        addPosts(topProfiles, i);
+      }
+    
+      // Function to add Posts html to Post Container
+      function addPosts(topProfiles, i) {
+        for (var j = 0; j < 4; j++) {
+          $('#postContainer' + topProfiles[i].Id).append('<div class="thumbnail">\
+              <a href="" id="link' + topProfiles[i].Id + j + '">\
+                <img src="" class="cards" id="thumbnail' + topProfiles[i].Id + j +'"/>\
+              </a>\
+              <h4>\
+                <img src="img/icons/icon2.png" id="like' + topProfiles[i].Id + j +'"  height="15px" alt="Likes">\
+                <i id="popularity' + topProfiles[i].Id + j +'"></i>\
+                <img src="img/icons/icon5.png" id="feedback' + topProfiles[i].Id + j +'"  height="15px" alt="Feedbacks">\
+                <i id="feedbackCount' + topProfiles[i].Id + j +'"></i>\
+              </h4>\
+              <p class="text_column" id="status' + topProfiles[i].Id + j +'"></p>\
+              <p class="tag" id="hastag' + topProfiles[i].Id + j +'"></p>\
+            </div>');
+          setPostsContent(topProfiles[i].Id, j, false);
+        }
+      }
+    
+      // Function to set content of Upper Gallery
+      function setGalleryContent(topProfiles, i) {
+        $('#topProfileImage' + i).attr("src","img/profile_img/" + topProfiles[i].ImageProfile);
+        $('#topProfileUsername' + i).html(topProfiles[i].UserName);
+        $('#topProfileFullName' + i).html(topProfiles[i].DisplayName);
+      }
+    
+      // Function to set content of Posts
+      function setPostsContent(id, j, check) {
+        Promise.resolve()
+        .then(() => {
+            return $.post('Posts/GetPostsContent', {id: id, max: 4});
+        })
+            .then((posts) => {
+                var postsContent = JSON.parse(posts);
+          if(postsContent.length == 0) {
+            $('#postContainer' + id).addClass('hide');
+          } else {
+            $("#link" + id + j).attr('href', '/client/views/postDetails.html?id=' + postsContent[j].Id);
+            if(check) {
+              id = '0' + id;
+            } 
+            $('#thumbnail' + id + j).attr("src","img/instagram_img/" + postsContent[j].Image);
+            var postid = postsContent[j].Id;
+            var likeCountTag = "popularity" + id + j;
+            var likeIconIDTag = "like" + id + j;
+            isLike(postid, likeIconIDTag, likeIconIDTag);
+            $('#like' + id + j).attr('onclick','likeClick("' + postid + '", "' + likeCountTag +'","' + likeIconIDTag + '")');
+            $('#popularity' + id + j).html(postsContent[j].LikeCount);
+            $('#feedbackCount' + id + j).html(postsContent[j].FeedbackCount);
+            $('#status' + id + j).html(postsContent[j].Status);
+            $('#hastag' + id + j).html(postsContent[j].HashTag);
+          }
+        });
+      }
+      
+      /*handle a click on the LIKE button we've included with each post
+        we receive the ID of the post as a parameter */
+      function likeClick(id, likeCounttag, likeIconTag) {
+        Promise.resolve()
+        .then(function() {
+            /*here we pass the ID to the incrLike route on the server side so it can do the incrementing for us
+            //note the return. This MUST be here, or the subsequent then will not wait for this to complete */
+           return $.post('/server/server.php', 'type=increLike' + '&id=' + id);
+        })
+        .then(function(like) {
+          if (like.count > 0) {
+            //jQuery provides a nice convenience method for easily setting the count to the value returned
+            $('#' + likeCounttag).html(like.count);
+          }
+          if (like.result) {
+            $('#' + likeIconTag).attr('src','img/icons/Like.png');
+          }
+          else {
+            $('#' + likeIconTag).attr('src','img/icons/icon2.png');
+          }
+        })
+        .catch(function(err) {
+            //always include a catch for the promise chain
+        });
+      }
+
+      function isLike(postID, likeIconID) {
+        Promise.resolve()
+        .then(function() {
+          return $.post('/server/server.php', 'type=isLike' + '&id=' + postID);
+        })
+        .then(function(resonse) {
+          if(resonse.result) {
+            $('#' + likeIconID).attr("src","img/icons/Like.png");
+          }
+        })
+      }
+      
+      /*handle a click on the Follow button 
+        we receive the ID of user as a parameter */
+      function followerClick(followButtonID, followUserID) {
+        Promise.resolve()
+        .then(function(){
+          return $.post('/server/server.php', 'type=incrFollow' + '&followid=' + followUserID);
+        })
+        .then(function(user) {
+          if (user.FollowingCount > 0) {
+              $('#followingCount').html(user.FollowingCount);
+          }
+          if (user.result) {
+              $('#' + followButtonID).html('Following');
+          }
+          else {
+              $('#' + followButtonID).html('Follow');
+          }
+        })
+        .catch(function(err) {
+            //always include a catch for the promise chain
+        });
+      }
+      
+      // Check whether the user is followed or not in order to display following button
+      function isFollow(followButtonID, followUserID) {
+        Promise.resolve()
+        .then(function() {
+          return $.post('/server/server.php', 'type=isFollow' + '&followid=' + followUserID);
+        })
+        // Display as following 
+        .then(function(response){
+          if(response.result) {
+           $('#' + followButtonID).html('Following');
+          }
+        })
+      }
+    </script>
+  </head>
+  <body onload="loadPage();">
+   
+    <!-- Main Container -->
+    <div class="container"> 
+    
+      <!-- Header Section-->
+      <header id="header" class="header"></header>
+      <script> 
+        /*global $*/
+        $(function() {
+          $("#header").load("templates/header.html");
+        });
+      </script> 
+      
+      <!-- Intro Section -->
+      <section class="intro" >
+        <div class="intro_column">
+          <h3 id="displayName"></h3>
+          <img src="" class="profile" alt="Profile image" id="profileImage"> 
+        </div>
+        <div class="intro_column">
+          <p id="test"><strong>Welcome to Instagram!</strong></p>
+          <p>Follow accounts to see photos in your feed.</p>
+          <p><strong><i id="postCount"></i></strong> posts<span class="summary"><strong><i id="followerCount"></i></strong> followers</span> <span class="summary"><strong><i id="followingCount"></i></strong> following</span></p>
+        </div>
+      </section>
+      
+      <!-- Gallery Section -->
+      <div id="galleryContainer"></div>
+      
+      <!-- Footer Section -->
+      <footer id="footer"></footer>
+      <script>
+        /*global $*/
+        $(function() {
+          $("#footer").load("templates/footer.html"); 
+        });
+      </script> 
+      
+      <!-- Copyrights Section -->
+      <div class="copyright" id="copyright"></div>
+      <script> 
+        $(function() {
+          /*global $*/
+          $("#copyright").load("templates/copyright.html"); 
+        });
+      </script> 
+    </div>
+  </body>
+</html>

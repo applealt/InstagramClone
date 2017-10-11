@@ -1,0 +1,140 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\bootstrap-theme.css" />
+    <None Include="wwwroot\css\bootstrap-theme.css.map" />
+    <None Include="wwwroot\css\bootstrap-theme.min.css" />
+    <None Include="wwwroot\css\bootstrap-theme.min.css.map" />
+    <None Include="wwwroot\css\bootstrap.css" />
+    <None Include="wwwroot\css\bootstrap.css.map" />
+    <None Include="wwwroot\css\bootstrap.min.css" />
+    <None Include="wwwroot\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\css\forgotPassword.css" />
+    <None Include="wwwroot\css\hide.css" />
+    <None Include="wwwroot\css\instagramClone.css" />
+    <None Include="wwwroot\css\login.css" />
+    <None Include="wwwroot\css\login2.css" />
+    <None Include="wwwroot\css\loginAnimation.css" />
+    <None Include="wwwroot\css\postDetails.css" />
+    <None Include="wwwroot\css\upload.css" />
+    <None Include="wwwroot\fonts\BebasNeue-webfont.eot" />
+    <None Include="wwwroot\fonts\BebasNeue-webfont.svg" />
+    <None Include="wwwroot\fonts\BebasNeue-webfont.ttf" />
+    <None Include="wwwroot\fonts\BebasNeue-webfont.woff" />
+    <None Include="wwwroot\fonts\fontomas-webfont.eot" />
+    <None Include="wwwroot\fonts\fontomas-webfont.svg" />
+    <None Include="wwwroot\fonts\fontomas-webfont.ttf" />
+    <None Include="wwwroot\fonts\fontomas-webfont.woff" />
+    <None Include="wwwroot\fonts\franchise-bold-webfont.eot" />
+    <None Include="wwwroot\fonts\franchise-bold-webfont.svg" />
+    <None Include="wwwroot\fonts\franchise-bold-webfont.ttf" />
+    <None Include="wwwroot\fonts\franchise-bold-webfont.woff" />
+    <None Include="wwwroot\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="wwwroot\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="wwwroot\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="wwwroot\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\img\bg.jpg" />
+    <None Include="wwwroot\img\bkg_06.jpg" />
+    <None Include="wwwroot\img\checkbox.png" />
+    <None Include="wwwroot\img\close-button.png" />
+    <None Include="wwwroot\img\dark-cubes.png" />
+    <None Include="wwwroot\img\detailBG.png" />
+    <None Include="wwwroot\img\file.png" />
+    <None Include="wwwroot\img\form\search1.png" />
+    <None Include="wwwroot\img\glyphicons-halflings-white.png" />
+    <None Include="wwwroot\img\glyphicons-halflings.png" />
+    <None Include="wwwroot\img\icons\add.png" />
+    <None Include="wwwroot\img\icons\addh.png" />
+    <None Include="wwwroot\img\icons\icon1.png" />
+    <None Include="wwwroot\img\icons\icon1h.png" />
+    <None Include="wwwroot\img\icons\icon2.png" />
+    <None Include="wwwroot\img\icons\icon3.png" />
+    <None Include="wwwroot\img\icons\icon3h.png" />
+    <None Include="wwwroot\img\icons\icon4.png" />
+    <None Include="wwwroot\img\icons\icon5.png" />
+    <None Include="wwwroot\img\icons\Like.png" />
+    <None Include="wwwroot\img\instagram_img\arianagrande1.jpg" />
+    <None Include="wwwroot\img\instagram_img\arianagrande2.jpg" />
+    <None Include="wwwroot\img\instagram_img\arianagrande3.jpg" />
+    <None Include="wwwroot\img\instagram_img\arianagrande4.jpg" />
+    <None Include="wwwroot\img\instagram_img\arianagrande5.jpg" />
+    <None Include="wwwroot\img\instagram_img\arianagrande6.jpg" />
+    <None Include="wwwroot\img\instagram_img\arianagrande7.jpg" />
+    <None Include="wwwroot\img\instagram_img\arianagrande8.jpg" />
+    <None Include="wwwroot\img\instagram_img\cristiano1.jpg" />
+    <None Include="wwwroot\img\instagram_img\cristiano2.jpg" />
+    <None Include="wwwroot\img\instagram_img\cristiano3.jpg" />
+    <None Include="wwwroot\img\instagram_img\cristiano4.jpg" />
+    <None Include="wwwroot\img\instagram_img\cristiano5.jpg" />
+    <None Include="wwwroot\img\instagram_img\cristiano6.jpg" />
+    <None Include="wwwroot\img\instagram_img\cristiano7.jpg" />
+    <None Include="wwwroot\img\instagram_img\cristiano8.jpg" />
+    <None Include="wwwroot\img\instagram_img\instagram1.jpg" />
+    <None Include="wwwroot\img\instagram_img\instagram2.jpg" />
+    <None Include="wwwroot\img\instagram_img\instagram3.jpg" />
+    <None Include="wwwroot\img\instagram_img\instagram4.jpg" />
+    <None Include="wwwroot\img\instagram_img\instagram5.jpg" />
+    <None Include="wwwroot\img\instagram_img\instagram6.jpg" />
+    <None Include="wwwroot\img\instagram_img\instagram7.jpg" />
+    <None Include="wwwroot\img\instagram_img\instagram8.jpg" />
+    <None Include="wwwroot\img\instagram_img\justinbieber1.jpg" />
+    <None Include="wwwroot\img\instagram_img\justinbieber2.jpg" />
+    <None Include="wwwroot\img\instagram_img\justinbieber3.jpg" />
+    <None Include="wwwroot\img\instagram_img\justinbieber4.jpg" />
+    <None Include="wwwroot\img\instagram_img\justinbieber5.jpg" />
+    <None Include="wwwroot\img\instagram_img\justinbieber6.jpg" />
+    <None Include="wwwroot\img\instagram_img\justinbieber7.jpg" />
+    <None Include="wwwroot\img\instagram_img\justinbieber8.jpg" />
+    <None Include="wwwroot\img\instagram_img\selenagomez1.jpg" />
+    <None Include="wwwroot\img\instagram_img\selenagomez2.jpg" />
+    <None Include="wwwroot\img\instagram_img\selenagomez3.jpg" />
+    <None Include="wwwroot\img\instagram_img\selenagomez4.jpg" />
+    <None Include="wwwroot\img\instagram_img\selenagomez5.jpg" />
+    <None Include="wwwroot\img\instagram_img\selenagomez6.jpg" />
+    <None Include="wwwroot\img\instagram_img\selenagomez7.jpg" />
+    <None Include="wwwroot\img\instagram_img\selenagomez8.jpg" />
+    <None Include="wwwroot\img\logo\logo_img1.png" />
+    <None Include="wwwroot\img\logo\logo_img2.png" />
+    <None Include="wwwroot\img\logo\logo_img3.png" />
+    <None Include="wwwroot\img\profile.png" />
+    <None Include="wwwroot\img\profile_img\arianagrande.jpg" />
+    <None Include="wwwroot\img\profile_img\cristiano.jpg" />
+    <None Include="wwwroot\img\profile_img\default.png" />
+    <None Include="wwwroot\img\profile_img\instagram.jpg" />
+    <None Include="wwwroot\img\profile_img\justinbieber.jpg" />
+    <None Include="wwwroot\img\profile_img\selenagomez.jpg" />
+    <None Include="wwwroot\img\remove-file.png" />
+    <None Include="wwwroot\img\title.png" />
+    <None Include="wwwroot\img\tooltip.png" />
+    <None Include="wwwroot\img\upload-bg.PNG" />
+    <None Include="wwwroot\js\bootstrap.js" />
+    <None Include="wwwroot\js\bootstrap.min.js" />
+    <None Include="wwwroot\js\jquery-3.2.1.min.js" />
+    <None Include="wwwroot\js\jquery-progressbar.min.js" />
+    <None Include="wwwroot\js\login.js" />
+    <None Include="wwwroot\js\npm.js" />
+    <None Include="wwwroot\js\plupload.full.js" />
+    <None Include="wwwroot\sql\instagramDB.sql" />
+    <None Include="wwwroot\templates\copyright.html" />
+    <None Include="wwwroot\templates\footer.html" />
+    <None Include="wwwroot\templates\header.html" />
+  </ItemGroup>
+
+</Project>
