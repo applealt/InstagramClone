@@ -20,3 +20,14 @@ D:\Workspace\Instagram Clone Dotnet\InstagramClone\obj\Debug\netcoreapp2.0\Insta
 D:\Workspace\Instagram Clone Dotnet\InstagramClone\obj\Debug\netcoreapp2.0\InstagramClone.AssemblyInfo.cs
 D:\Workspace\Instagram Clone Dotnet\InstagramClone\obj\Debug\netcoreapp2.0\InstagramClone.dll
 D:\Workspace\Instagram Clone Dotnet\InstagramClone\obj\Debug\netcoreapp2.0\InstagramClone.pdb
+D:\Workspace\Instagram Clone\instagram_clone_dotnet\InstagramClone\bin\Debug\netcoreapp2.0\InstagramClone.deps.json
+D:\Workspace\Instagram Clone\instagram_clone_dotnet\InstagramClone\bin\Debug\netcoreapp2.0\InstagramClone.runtimeconfig.json
+D:\Workspace\Instagram Clone\instagram_clone_dotnet\InstagramClone\bin\Debug\netcoreapp2.0\InstagramClone.runtimeconfig.dev.json
+D:\Workspace\Instagram Clone\instagram_clone_dotnet\InstagramClone\bin\Debug\netcoreapp2.0\InstagramClone.dll
+D:\Workspace\Instagram Clone\instagram_clone_dotnet\InstagramClone\bin\Debug\netcoreapp2.0\InstagramClone.pdb
+D:\Workspace\Instagram Clone\instagram_clone_dotnet\InstagramClone\obj\Debug\netcoreapp2.0\InstagramClone.csprojResolveAssemblyReference.cache
+D:\Workspace\Instagram Clone\instagram_clone_dotnet\InstagramClone\obj\Debug\netcoreapp2.0\InstagramClone.csproj.CoreCompileInputs.cache
+D:\Workspace\Instagram Clone\instagram_clone_dotnet\InstagramClone\obj\Debug\netcoreapp2.0\InstagramClone.AssemblyInfoInputs.cache
+D:\Workspace\Instagram Clone\instagram_clone_dotnet\InstagramClone\obj\Debug\netcoreapp2.0\InstagramClone.AssemblyInfo.cs
+D:\Workspace\Instagram Clone\instagram_clone_dotnet\InstagramClone\obj\Debug\netcoreapp2.0\InstagramClone.dll
+D:\Workspace\Instagram Clone\instagram_clone_dotnet\InstagramClone\obj\Debug\netcoreapp2.0\InstagramClone.pdb

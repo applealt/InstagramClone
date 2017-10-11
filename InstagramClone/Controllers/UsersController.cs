@@ -19,6 +19,75 @@ namespace InstagramClone.Controllers
             _context = context;
         }
 
+        // GET: Users/SearchProfile
+        public async Task<string> SearchProfile(int id)
+        {
+            if (id == null)
+            {
+                return NotFound().ToString();
+            }
+
+            var user = await _context.Users
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (user == null)
+            {
+                return NotFound().ToString();
+            }
+
+            return JsonConvert.SerializeObject(user);
+        }
+
+        // GET: Users/SearchProfile2
+        public async Task<string> SearchProfile2(string searchText)
+        {
+            if (searchText == null)
+            {
+                return NotFound().ToString();
+            }
+
+            //var user = await _context.Users
+            //    .SingleOrDefaultAsync(m => m.Id == id);
+            //if (user == null)
+            //{
+            //    return NotFound().ToString();
+            //}
+
+            //return JsonConvert.SerializeObject(user);
+            return "";
+        }
+
+        // GET: Users/GetUserProfile
+        public string GetUserProfile()
+        {
+            int id = 1;
+
+            if (id == null)
+            {
+                return NotFound().ToString();
+            }
+
+            var user = _context.Users
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (user == null)
+            {
+                return NotFound().ToString();
+            }
+
+            return JsonConvert.SerializeObject(user);
+        }
+
+        // GET: Users/GetTopProfiles
+        public string GetTopProfiles()
+        {
+            List<Users> users = _context.Users.Take(3).ToList<Users>();
+            if (users == null)
+            {
+                return NotFound().ToString();
+            }
+
+            return JsonConvert.SerializeObject(users);
+        }
+
         // GET: Users
         public async Task<IActionResult> Index()
         {
@@ -43,37 +112,7 @@ namespace InstagramClone.Controllers
             return View(JsonConvert.SerializeObject(users));
         }
 
-        // GET: Users/GetUserProfile
-        public string GetUserProfile()
-        {
-            int id = 1;
-
-            if (id == null)
-            {
-                return NotFound().ToString();
-            }
-
-            var users =  _context.Users
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (users == null)
-            {
-                return NotFound().ToString();
-            }
-
-            return JsonConvert.SerializeObject(users);
-        }
-
-        // GET: Users/GetTopProfiles
-        public string GetTopProfiles()
-        {
-            var users = _context.Users.Take(3);
-            if (users == null)
-            {
-                return NotFound().ToString();
-            }
-
-            return JsonConvert.SerializeObject(users);
-        }
+        
 
         // GET: Users/Create
         public IActionResult Create()

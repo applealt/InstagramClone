@@ -4,7 +4,7 @@
   <img src="../img/logo/logo_img3.png" alt="Brand">
 </div>
 <div class="header_center">
-  <form action="/server/searchProfile2.php" id="search" method="POST"><input id="searchBox" name="user" placeholder="Search" value="" type="text" alt="Search box"></form>
+  <form action="/Users/SearchProfile2" id="search" method="POST"><input id="searchBox" name="user" placeholder="Search" value="" type="text" alt="Search box"></form>
     
   
 </div>
@@ -18,22 +18,22 @@
   /*global $*/
   $('#logout').click( () => {
          Promise.resolve()
-         .then(function(){
-            return $.post('/server/logout.php');
-          })
+         //.then(function(){
+         //   return $.post('/server/logout.php');
+         // })
           .then(function(response){
           if(response.result)
           {
-              window.location.replace('/client/views/loginAndRegistration.html');
+              window.location.replace('/Home/LoginAndRegistration');
           }
         })
   });
   
   $('#home').click( () => {
-    window.location.replace('/client/views/index.html');
+    window.location.replace('/Home/Index');
   });
   
   $('#upload').click( () => {
-    window.location.replace('/client/views/upload.html' );
+    window.location.replace('/Home/Upload' );
   });
 </script>

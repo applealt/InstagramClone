@@ -1,4 +1,4 @@
-<!-- 
+﻿<!-- 
   Group information:
   
   Student 1:
@@ -23,10 +23,10 @@
     <title>Instagram Clone</title>
     
     <!-- Adds CSS -->
-    <link href="../css/instagramClone.css" rel="stylesheet" type="text/css">
+    <link href="/css/instagramClone.css" rel="stylesheet" type="text/css">
     
     <!-- Adds JQuery -->
-    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
   
     <!-- JavaScript to load the contents of the page -->
     <script>
@@ -36,7 +36,7 @@
         var id = window.location.href.split("=")[1];
         Promise.resolve()
         .then(() => {
-          return $.post('/server/searchProfile.php', {user: id});
+            return $.post('/Users/SearchProfile', {id: id});
         })
         .then((post) => {
           setUserProfile(post);
@@ -45,83 +45,84 @@
       
       // Function to set the user profile
       function setUserProfile(post) {
-        var userProfile = post[0];
-        $('#displayName').html(userProfile.displayName);
-        $('#profileImage').attr("src","../img/profile_img/" + userProfile.imageProfile);
-        $('#postCount').html(userProfile.postsCount);
-        $('#followerCount').html(userProfile.followersCount);
-        $('#followingCount').html(userProfile.followingCount);
+          var userProfile = JSON.parse(post);
+          $('#displayName').html(userProfile.DisplayName);
+          $('#profileImage').attr("src", "/img/profile_img/" + userProfile.ImageProfile);
+          $('#postCount').html(userProfile.PostsCount);
+          $('#followerCount').html(userProfile.FollowersCount);
+          $('#followingCount').html(userProfile.FollowingCount);
         addUserGallery(userProfile);
         setUserGalleryContent(userProfile);
       }
       
       // Function to add Gallery of user recent post to the Gallery Container
       function addUserGallery(userProfile) {
-        $('#galleryContainer').append('<div class="gallery">\
+          $('#galleryContainer').append('<div class="gallery">\
           <div class="gallery_upper">\
             <img src="" height="50px" class="profile" id="userProfileImage">\
             <h4>\
-            <a href="/client/views/postList.html?id='+userProfile.ID+'" style="text-decoration: none; font-size: 25px;color: aliceblue;"><span id="userProfileUsername"></span></a> \
-              <img alt="verified" src="../img/icons/icon4.png">\
+            <a href="/client/views/postList.html?id='+ userProfile.Id + '" style="text-decoration: none; font-size: 25px;color: aliceblue;"><span id="userProfileUsername"></span></a> \
+              <img alt="verified" src="/img/icons/icon4.png">\
               <p id="userProfileFullName"></p>\
             </h4>\
           </div>\
-          <div id="postContainer' + userProfile.ID + '">\
+          <div id="postContainer' + userProfile.Id+'">\
           </div>\
         </div>');
         addUserPosts(userProfile);
       }
       
       // Function to set content of User Upper Gallery
-      function setUserGalleryContent(userProfile) {
-        $('#userProfileImage').attr("src","../img/profile_img/" + userProfile.imageProfile);
-        $('#userProfileUsername').html(userProfile.displayName);
-        $('#userProfileFullName').html(userProfile.firstName + ' ' + userProfile.lastName);
-      }
+        function setUserGalleryContent(userProfile) {
+            $('#userProfileImage').attr("src", "/img/profile_img/" + userProfile.ImageProfile);
+            $('#userProfileUsername').html(userProfile.UserName);
+            $('#userProfileFullName').html(userProfile.DisplayName);
+        }
       
       // Function to add user Recent Posts html to Post Container
-      function addUserPosts(userProfile) {
-        for (var j = 0; j < userProfile.postsCount; j++) {
-          $('#postContainer' + userProfile.ID).append('<div class="thumbnail">\
-              <a href="" id="link' + userProfile.ID + j + '">\
-                <img src="" class="cards" id="thumbnail' + userProfile.ID + j +'"/>\
+        function addUserPosts(userProfile) {
+            for (var j = 0; j < userProfile.PostsCount; j++) {
+              $('#postContainer' + userProfile.Id).append('<div class="thumbnail">\
+              <a href="" id="link' + userProfile.Id + j + '">\
+                <img src="" class="cards" id="thumbnail' + userProfile.Id + j + '"/>\
               </a>\
               <h4>\
-                <img src="../img/icons/icon2.png" id="like' + userProfile.ID + j +'"  height="15px" alt="Likes">\
-                <i id="popularity' + userProfile.ID + j +'"></i>\
-                <img src="../img/icons/icon5.png" id="feedback' + userProfile.ID + j +'"  height="15px" alt="Feedbacks">\
-                <i id="feedbackCount' + userProfile.ID + j +'"></i>\
+                <img src="/img/icons/icon2.png" id="like' + userProfile.Id + j + '"  height="15px" alt="Likes">\
+                <i id="popularity' + userProfile.Id + j + '"></i>\
+                <img src="/img/icons/icon5.png" id="feedback' + userProfile.Id + j + '"  height="15px" alt="Feedbacks">\
+                <i id="feedbackCount' + userProfile.Id + j + '"></i>\
               </h4>\
-              <p class="text_column" id="status' + userProfile.ID + j +'"></p>\
-              <p class="tag" id="hastag' + userProfile.ID + j +'"></p>\
+              <p class="text_column" id="status' + userProfile.Id + j + '"></p>\
+              <p class="tag" id="hastag' + userProfile.Id + j + '"></p>\
             </div>');
-          setPostsContent(userProfile.ID, j, userProfile.postsCount);
+          setPostsContent(userProfile.Id, j, userProfile.PostsCount);
         }
       }
     
       // Function to set content of Posts
       function setPostsContent(id, j, max) {
-        Promise.resolve()
-        .then(() => {
-          return $.post('/server/getPostsContent.php', {id: id, max: max});
-        })
-        .then((posts) => {
-          var postsContent = posts;
-          $("#link" + id + j).attr('href', '/client/views/postDetails.html?id=' + postsContent[j].ID)
-          $('#thumbnail' + id + j).attr("src","../img/instagram_img/" + postsContent[j].image);
-         
-          var postid = postsContent[j].ID;
-          var likeCountTag = "popularity" + id + j;
-          
-          var likeIconIDTag = "like" + id + j;
-          isLike(postid, likeIconIDTag, likeIconIDTag);
-          
-          $('#like' + id + j).attr('onclick','likeClick("' + postid + '", "' + likeCountTag +'","' + likeIconIDTag + '")');
-          $('#popularity' + id + j).html(postsContent[j].likeCount);
-          $('#feedbackCount' + id + j).html(postsContent[j].feedbackCount);
-          $('#status' + id + j).html(postsContent[j].status);
-          $('#hastag' + id + j).html(postsContent[j].hashTag);
-        });
+          Promise.resolve()
+              .then(() => {
+                  return $.post('/Posts/GetPostsContent', { id: id, max: max });
+              })
+              .then((posts) => {
+                  var postsContent = JSON.parse(posts);
+                  if (postsContent.length == 0) {
+                      $('#postContainer' + id).addClass('hide');
+                  } else {
+                      $('#link' + id + j).attr('href', '/Home/PostDetails?id=' + postsContent[j].Id);
+                      $('#thumbnail' + id + j).attr("src", "/img/instagram_img/" + postsContent[j].Image);
+                      var postid = postsContent[j].Id;
+                      var likeCountTag = "popularity" + id + j;
+                      var likeIconIDTag = "like" + id + j;
+                      isLike(postid, likeIconIDTag, likeIconIDTag);
+                      $('#like' + id + j).attr('onclick', 'likeClick("' + postid + '", "' + likeCountTag + '","' + likeIconIDTag + '")');
+                      $('#popularity' + id + j).html(postsContent[j].LikeCount);
+                      $('#feedbackCount' + id + j).html(postsContent[j].FeedbackCount);
+                      $('#status' + id + j).html(postsContent[j].Status);
+                      $('#hastag' + id + j).html(postsContent[j].HashTag);
+                  }
+              });
       }
       
       /*handle a click on the LIKE button we've included with each post
@@ -139,10 +140,10 @@
             $('#' + likeCounttag).html(like.count);
           }
           if (like.result) {
-            $('#' + likeIconTag).attr('src','../img/icons/Like.png');
+            $('#' + likeIconTag).attr('src','img/icons/Like.png');
           }
           else {
-            $('#' + likeIconTag).attr('src','../img/icons/icon2.png');
+            $('#' + likeIconTag).attr('src','img/icons/icon2.png');
           }
         })
         .catch(function(err) {
@@ -157,7 +158,7 @@
         })
         .then(function(resonse) {
           if(resonse.result) {
-            $('#' + likeIconID).attr("src","../img/icons/Like.png");
+            $('#' + likeIconID).attr("src","/img/icons/Like.png");
           }
         })
       }
@@ -210,7 +211,7 @@
       <script> 
         /*global $*/
         $(function() {
-          $("#header").load("../templates/header.html");
+          $("#header").load("/templates/header.html");
         });
       </script> 
       
@@ -235,7 +236,7 @@
       <script>
         /*global $*/
         $(function() {
-          $("#footer").load("../templates/footer.html"); 
+          $("#footer").load("/templates/footer.html"); 
         });
       </script> 
       
@@ -244,7 +245,7 @@
       <script> 
         $(function() {
           /*global $*/
-          $("#copyright").load("../templates/copyright.html"); 
+          $("#copyright").load("/templates/copyright.html"); 
         });
       </script> 
     </div>
