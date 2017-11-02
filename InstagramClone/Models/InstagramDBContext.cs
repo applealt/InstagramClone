@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace InstagramClone.Models
 {
@@ -19,7 +20,15 @@ namespace InstagramClone.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=.;Database=InstagramDB;User Id=sa;Password=D@n13lD@ng28;");
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+               .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+               .AddJsonFile("appsettings.json")
+               .Build();
+
+                string conn = configuration.GetConnectionString("DefaultConnection");
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+
+                //       optionsBuilder.UseSqlServer(@"Server=.;Database=InstagramDB;User Id=sa;Password=D@n13lD@ng28;");
             }
         }
 

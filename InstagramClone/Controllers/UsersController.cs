@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using InstagramClone.Models;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace InstagramClone.Controllers
 {
     public class UsersController : Controller
     {
         private readonly InstagramDBContext _context;
+        string SessionKeyName = "sessionEmail";
 
         public UsersController(InstagramDBContext context)
         {
@@ -108,11 +110,11 @@ namespace InstagramClone.Controllers
             {
                 return NotFound();
             }
-            
+
             return View(JsonConvert.SerializeObject(users));
         }
 
-        
+
 
         // GET: Users/Create
         public IActionResult Create()
@@ -220,5 +222,34 @@ namespace InstagramClone.Controllers
         {
             return _context.Users.Any(e => e.Id == id);
         }
+
+
+        public bool Login(string email, string password)
+        {
+            var user = _context.Users
+                  .Where(m => m.Email == email)
+                  .ToList<Users>();
+
+            if (user.Count == 1)
+            {
+                if (user[0].Password == password)
+                {
+                    // Save session
+                    HttpContext.Session.SetString(SessionKeyName, email);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
+
     }
 }
