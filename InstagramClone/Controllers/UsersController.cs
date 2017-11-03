@@ -247,8 +247,38 @@ namespace InstagramClone.Controllers
             {
                 return false;
             }
+        }
 
+        public bool Register(string firstName, string lastName, string userName, string email, string password)
+        {
+            string displayName = firstName + lastName;
 
+            var users = _context.Users
+                 .Where(m => m.Email == email)
+                 .ToList<Users>();
+
+            if (users.Count == 0)
+            {
+                var newUser = new Users();
+                
+                newUser.DisplayName = displayName;
+                newUser.FirstName = firstName;
+                newUser.LastName = lastName;
+                newUser.UserName = userName;
+                newUser.Email = email;
+                newUser.Password = password;
+                newUser.ImageProfile = "instagram.jpg";
+              
+                _context.Add(newUser);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+           
         }
 
     }

@@ -75,32 +75,25 @@
                     $('#generalErr').html(errorMessage);
                 } else {
                     Promise.resolve()
-                        .then(function () {
-                            return $.post('/server/login.php',
-                                'type=register' +
-                                '&displayName=' + firstNameField + ' ' + lastNameField +
-                                '&firstName=' + firstNameField +
-                                '&lastName=' + lastNameField +
-                                '&username=' + usernameField +
-                                '&email=' + emailField +
-                                '&password=' + passwordField
-                            );
+                        .then(function () {           
+                            return $.post('/Users/Register', { firstName: firstNameField, lastName: lastNameField, userName: usernameField, email: emailField, password: passwordField});
                         })
                         .then(function (auth) {
                             $('#generalErr').html(auth.message);
-                            if (auth.isValid) {
+                            if (auth) {
                                 $('#toggle').addClass('hide');
                                 $('#registerSuccess').html('Account created successfully!<br>');
-                                $.post('/server/login.php', 'type=signin' + '&email=' + emailField + '&password=' + passwordField)
+                                $.post('/Users/Login', { email: emailField, password: passwordField })
+                             //   $.post('/server/login.php', 'type=signin' + '&email=' + emailField + '&password=' + passwordField)
                                     .done((auth) => {
-                                        if (auth.isValid) {
+                                        if (auth) {
                                             $('#registerSuccess').append('Proceeding to site')
-                                            setTimeout(window.location.replace('index.html'), 3000);
+                                            setTimeout(window.location.replace('Home/Index'), 3000);
                                         }
                                     })
                             }
                             else {
-                                $('#generalErr').html(auth.message);
+                                $('#generalErr').html("The account is already exist");
                             }
                         })
                 }
@@ -136,7 +129,7 @@
                                 <input name="password" required="required" type="password" placeholder="Password" id="password" />
                             </p>
                             <p class="keeplogin">
-                                <span><a style="text-decoration:none; font-size: 14px; font-style: italic;" href="forgotPassword.html">Forgot password ?</a></span>
+                                <span><a style="text-decoration:none; font-size: 14px; font-style: italic;" href="Home/ForgotPassword">Forgot password ?</a></span>
                             </p>
                             <p class="login button">
                                 <input type="submit" value="Login" />

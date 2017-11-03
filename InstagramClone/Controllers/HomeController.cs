@@ -17,7 +17,7 @@ namespace InstagramClone.Controllers
 
         public IActionResult ForgotPassword()
         {
-            return View("/Views/Home/forgetPassword.html");
+            return View("/Views/Home/forgotPassword.html");
         }
 
         public IActionResult LoginAndRegistration()
