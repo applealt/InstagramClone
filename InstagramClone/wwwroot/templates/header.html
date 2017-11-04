@@ -16,15 +16,17 @@
 
 <script>
   /*global $*/
+    //Hieu Tran
   $('#logout').click( () => {
          Promise.resolve()
-         //.then(function(){
-         //   return $.post('/server/logout.php');
-         // })
-          .then(function(response){
-          if(response.result)
+         .then(function(){
+            return $.post('../Users/Logout');
+         })
+          .then(function (response) {
+          var result = JSON.parse(response);
+          if(result)
           {
-              window.location.replace('/Home/LoginAndRegistration');
+              window.location.replace('../Home/LoginAndRegistration');
           }
         })
   });

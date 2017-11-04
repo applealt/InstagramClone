@@ -389,5 +389,10 @@ namespace InstagramClone.Controllers
                 Response.Redirect("../Home/VerificationError?e=invalidVerification");
             }
         }
+        public bool Logout()
+        {
+            HttpContext.Session.SetString(SessionKey, "");
+            return true;
+        }
     }
 }
