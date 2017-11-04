@@ -39,5 +39,10 @@ namespace InstagramClone.Controllers
         {
             return View("/Views/Home/upload.html");
         }
+
+        public IActionResult VerificationError()
+        {
+            return View("/Views/Home/error.html");
+        }
     }
 }
