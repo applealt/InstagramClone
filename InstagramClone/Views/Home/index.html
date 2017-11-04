@@ -216,33 +216,33 @@
         .then(function() {
             /*here we pass the ID to the incrLike route on the server side so it can do the incrementing for us
             //note the return. This MUST be here, or the subsequent then will not wait for this to complete */
-           return $.post('/server/server.php', 'type=increLike' + '&id=' + id);
+            return $.post('/Posts/IncreaseLike', { postID: id });
         })
-        .then(function(like) {
+        .then(function (response) {
+          var like = JSON.parse(response);
           if (like.count > 0) {
             //jQuery provides a nice convenience method for easily setting the count to the value returned
             $('#' + likeCounttag).html(like.count);
           }
-          if (like.result) {
-            $('#' + likeIconTag).attr('src','/img/icons/Like.png');
+          if (like.result == "true") {
+            $('#' + likeIconTag).attr('src','../img/icons/Like.png');
           }
           else {
-            $('#' + likeIconTag).attr('src','/img/icons/icon2.png');
+            $('#' + likeIconTag).attr('src','../img/icons/icon2.png');
           }
         })
-        .catch(function(err) {
-            //always include a catch for the promise chain
-        });
+     
       }
 
       function isLike(postID, likeIconID) {
         Promise.resolve()
         .then(function() {
-          return $.post('/server/server.php', 'type=isLike' + '&id=' + postID);
+            return $.post('/Posts/IsLike', { PostID: postID });
         })
-        .then(function(resonse) {
-          if(resonse.result) {
-            $('#' + likeIconID).attr("src","/img/icons/Like.png");
+        .then(function (resonse) {
+            var like = JSON.parse(resonse);
+          if (like) {
+            $('#' + likeIconID).attr("src","../img/icons/Like.png");
           }
         })
       }
@@ -252,13 +252,14 @@
       function followerClick(followButtonID, followUserID) {
         Promise.resolve()
         .then(function(){
-          return $.post('/server/server.php', 'type=incrFollow' + '&followid=' + followUserID);
+            return $.post('/Posts/IncreaseFollower', { followerID: followUserID });
         })
-        .then(function(user) {
+          .then(function (response) {
+          var user = JSON.parse(response);
           if (user.FollowingCount > 0) {
               $('#followingCount').html(user.FollowingCount);
           }
-          if (user.result) {
+          if (user.result == "true") {
               $('#' + followButtonID).html('Following');
           }
           else {
@@ -274,11 +275,12 @@
       function isFollow(followButtonID, followUserID) {
         Promise.resolve()
         .then(function() {
-          return $.post('/server/server.php', 'type=isFollow' + '&followid=' + followUserID);
+            return $.post('/Posts/IsFollow', { followid : followUserID });
         })
         // Display as following 
-        .then(function(response){
-          if(response.result) {
+            .then(function (response) {
+                var result = JSON.parse(response);
+                if (result) {
            $('#' + followButtonID).html('Following');
           }
         })

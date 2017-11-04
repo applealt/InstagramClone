@@ -16,7 +16,7 @@ namespace InstagramClone.Controllers
     public class UsersController : Controller
     {
         private readonly InstagramDBContext _context;
-        string SessionKeyName = "sessionEmail";
+        private string SessionKey = session.SessionKey;
 
         public UsersController(InstagramDBContext context)
         {
@@ -238,7 +238,7 @@ namespace InstagramClone.Controllers
                 if (checkPassword)
                 {
                     // Save session
-                    HttpContext.Session.SetString(SessionKeyName, email);
+                    HttpContext.Session.SetString(SessionKey, email);
                     return true;
                 }
                 else
