@@ -27,8 +27,6 @@ namespace InstagramClone.Models
 
                 string conn = configuration.GetConnectionString("DefaultConnection");
                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-
-                //       optionsBuilder.UseSqlServer(@"Server=.;Database=InstagramDB;User Id=sa;Password=D@n13lD@ng28;");
             }
         }
 

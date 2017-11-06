@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Http;
 using System.Net.Mail;
 using System.Net;
 
-
 namespace InstagramClone.Controllers
 {
     public class UsersController : Controller
@@ -23,7 +22,7 @@ namespace InstagramClone.Controllers
             _context = context;
         }
 
-        // GET: Users/SearchProfile
+        // Users/SearchProfile
         public async Task<string> SearchProfile(int id)
         {
             if (id == null)
@@ -41,29 +40,20 @@ namespace InstagramClone.Controllers
             return JsonConvert.SerializeObject(user);
         }
 
-        // GET: Users/SearchProfile2
-        public async Task<string> SearchProfile2(string searchText)
+        // Users/SearchProfile2
+        [HttpPost]
+        public string  SearchProfile2(string user)
         {
-            if (searchText == null)
-            {
-                return NotFound().ToString();
-            }
 
-            //var user = await _context.Users
-            //    .SingleOrDefaultAsync(m => m.Id == id);
-            //if (user == null)
-            //{
-            //    return NotFound().ToString();
-            //}
-
-            //return JsonConvert.SerializeObject(user);
-            return "";
+            var result = _context.Users
+                .SingleOrDefault(m => m.DisplayName == user || m.UserName == user || m.Email == user);
+            return JsonConvert.SerializeObject(result);
         }
 
-        // GET: Users/GetUserProfile
+        // Users/GetUserProfile
         public string GetUserProfile()
         {
-            int id = 1;
+            int id = Convert.ToInt32(JsonConvert.DeserializeObject(GetLoggedInUserId()));
 
             if (id == null)
             {
@@ -80,7 +70,7 @@ namespace InstagramClone.Controllers
             return JsonConvert.SerializeObject(user);
         }
 
-        // GET: Users/GetTopProfiles
+        // Users/GetTopProfiles
         public string GetTopProfiles()
         {
             List<Users> users = _context.Users.Take(3).ToList<Users>();
@@ -92,13 +82,21 @@ namespace InstagramClone.Controllers
             return JsonConvert.SerializeObject(users);
         }
 
-        // GET: Users
-        public async Task<IActionResult> Index()
+        // Users/GetLoggedInUserId
+        public string GetLoggedInUserId()
         {
-            return View(await _context.Users.ToListAsync());
+            string email = HttpContext.Session.GetString(SessionKey);
+            var user = _context.Users
+                .SingleOrDefault(m => m.Email == email);
+            if (user == null)
+            {
+                return NotFound().ToString();
+            }
+
+            return JsonConvert.SerializeObject(user.Id);
         }
 
-        // GET: Users/Details/5
+        // Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -116,116 +114,7 @@ namespace InstagramClone.Controllers
             return View(JsonConvert.SerializeObject(users));
         }
 
-
-
-        // GET: Users/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Users/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DisplayName,UserName,Email,Password,ImageProfile,FirstName,LastName,PostsCount,FollowersCount,FollowingCount,CreatedDate")] Users users)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(users);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(users);
-        }
-
-        // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var users = await _context.Users.SingleOrDefaultAsync(m => m.Id == id);
-            if (users == null)
-            {
-                return NotFound();
-            }
-            return View(users);
-        }
-
-        // POST: Users/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DisplayName,UserName,Email,Password,ImageProfile,FirstName,LastName,PostsCount,FollowersCount,FollowingCount,CreatedDate")] Users users)
-        {
-            if (id != users.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(users);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UsersExists(users.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(users);
-        }
-
-        // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var users = await _context.Users
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (users == null)
-            {
-                return NotFound();
-            }
-
-            return View(users);
-        }
-
-        // POST: Users/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var users = await _context.Users.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Users.Remove(users);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool UsersExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
-        }
-
-
+        // Users/Login
         public bool Login(string email, string password)
         {
             var users = _context.Users
@@ -252,6 +141,7 @@ namespace InstagramClone.Controllers
             }
         }
 
+        // Users/Register
         public bool Register(string firstName, string lastName, string userName, string email, string password)
         {
             string displayName = firstName + lastName;
@@ -282,6 +172,7 @@ namespace InstagramClone.Controllers
             }
         }
 
+        // Users/ForgetPassword
         public bool ForgetPassword(string email, string newPassword)
         {
             // check account whether it is existed 
@@ -350,6 +241,8 @@ namespace InstagramClone.Controllers
                 return false;
             }
         }
+
+        // Users/VerifyResetPassword
         public void VerifyResetPassword(string id)
         {
             // get verifycation record by id
@@ -389,6 +282,8 @@ namespace InstagramClone.Controllers
                 Response.Redirect("../Home/VerificationError?e=invalidVerification");
             }
         }
+
+        // Users/Logout
         public bool Logout()
         {
             HttpContext.Session.SetString(SessionKey, "");

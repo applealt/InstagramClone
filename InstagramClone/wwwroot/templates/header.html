@@ -1,41 +1,53 @@
 <div class="header_left">
-  <img src="../img/logo/logo_img1.png" alt="Company logo">
-  <img src="../img/logo/logo_img2.png" width="1px" alt="">
-  <img src="../img/logo/logo_img3.png" alt="Brand">
+    <img src="../img/logo/logo_img1.png" alt="Company logo">
+    <img src="../img/logo/logo_img2.png" width="1px" alt="">
+    <img src="../img/logo/logo_img3.png" alt="Brand">
 </div>
 <div class="header_center">
-  <form action="/Users/SearchProfile2" id="search" method="POST"><input id="searchBox" name="user" placeholder="Search" value="" type="text" alt="Search box"></form>
-    
-  
+    <form action=" " onsubmit="return false;" id="search"><input id="searchBox" placeholder="Search" value="" type="text" alt="Search box"></form>
+
+
 </div>
 <div class="header_right">
-  <img src="../img/icons/add.png" alt="Upload" id="upload">
-  <img src="../img/icons/icon3.png" alt="Home" id="home">
-  <img src="../img/icons/icon1.png" alt="Logout" id="logout">
+    <img src="../img/icons/add.png" alt="Upload" id="upload">
+    <img src="../img/icons/icon3.png" alt="Home" id="home">
+    <img src="../img/icons/icon1.png" alt="Logout" id="logout">
 </div>
 
 <script>
-  /*global $*/
-    //Hieu Tran
-  $('#logout').click( () => {
-         Promise.resolve()
-         .then(function(){
-            return $.post('../Users/Logout');
-         })
-          .then(function (response) {
-          var result = JSON.parse(response);
-          if(result)
-          {
-              window.location.replace('../Home/LoginAndRegistration');
-          }
-        })
-  });
-  
-  $('#home').click( () => {
-    window.location.replace('/Home/Index');
-  });
-  
-  $('#upload').click( () => {
-    window.location.replace('/Home/Upload' );
-  });
+    /*global $*/
+    $('#search').submit(() => {
+        Promise.resolve()
+            .then(function () {
+                return $.post('/Users/SearchProfile2', { user: $('#searchBox').val() });
+            })
+            .then(function (response) {
+                var result = JSON.parse(response);
+                if (result == null) {
+                    window.location.replace('../Home/VerificationError?error=userNotFound');
+                } else {
+                    window.location.replace('../Home/PostList?id=' + result.Id);
+                }
+            })
+    });
+    $('#logout').click(() => {
+        Promise.resolve()
+            .then(function () {
+                return $.post('../Users/Logout');
+            })
+            .then(function (response) {
+                var result = JSON.parse(response);
+                if (result) {
+                    window.location.replace('../Home/LoginAndRegistration');
+                }
+            })
+    });
+
+    $('#home').click(() => {
+        window.location.replace('/Home/Index');
+    });
+
+    $('#upload').click(() => {
+        window.location.replace('/Home/Upload');
+    });
 </script>

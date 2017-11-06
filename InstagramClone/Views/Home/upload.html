@@ -1,4 +1,4 @@
-<!-- 
+﻿<!-- 
   Group information:
   
   Student 1:
@@ -30,13 +30,21 @@
 		<script>
 			/* global $ */
 			/* global plupload */
+            var userID = 0;
+            Promise.resolve()
+                .then(() => {
+                    return $.post('/Users/GetLoggedInUserId');
+                })
+                .then((post) => {
+                    userID = JSON.parse(post);
+                })
 			
 			// Upload Form
 			$(function() {
 				// Settings 
 				var uploader = new plupload.Uploader({
 					runtimes : 'html5, flash', // Set runtimes, here it will use HTML5, if not supported will use flash, etc.
-					url : '/server/upload.php',
+                    url: '/Posts/UploadFile',
 					browse_button : 'pickfiles', // The id on the select files button
 					multi_selection: false, // Allow to select one file each time
 					container : 'uploader', // The id of the upload form container
@@ -52,7 +60,8 @@
 				/* Start Upload 
 				   When the button with the id "#uploadfiles" is clicked the upload will start */
 				$('#uploadfiles').click(function(e) {
-					uploader.settings.multipart_params = { 
+                    uploader.settings.multipart_params = { 
+                        id: userID,
 						status: $('#status').val(),
 						hashtag: $('#hashtag').val()}
 					uploader.start();
@@ -61,8 +70,8 @@
 	
 				uploader.init(); // Initializes the Uploader instance and adds internal event listeners.
 				
-				uploader.bind('FileUploaded', (dir, file, obj) => {
-					window.location.replace('/client/views/postList.html?id=' + obj.response);
+                uploader.bind('FileUploaded', (dir, file, obj) => {
+                    window.location.replace('/Home/PostList?id=' + userID);
 				})
 				/* Selected Files 
 				  When the user select a file it will append one div with the class "addedFile" and a unique id to the "#filelist" div.

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using InstagramClone.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace InstagramClone.Controllers
 {
@@ -21,7 +22,7 @@ namespace InstagramClone.Controllers
             _context = context;
         }
 
-        // GET: Posts/GetPostsContent
+        // GET: /Posts/GetPostsContent
         public string GetPostsContent(int id, int max)
         {
             if (id == null || max == null)
@@ -41,6 +42,57 @@ namespace InstagramClone.Controllers
             return JsonConvert.SerializeObject(posts);
         }
 
+        // GET: /Posts/SearchPost
+        public string SearchPost(int id)
+        {
+            if (id == null)
+            {
+                return NotFound().ToString();
+            }
+
+            var post = _context.Posts
+                .SingleOrDefault(m => m.Id == id);
+            if (post == null)
+            {
+                return NotFound().ToString();
+            }
+
+            return JsonConvert.SerializeObject(post);
+        }
+
+        // GET: /Posts/UploadFile
+        public void UploadFile(IFormFile file, int id, String status, string hashtag)
+        {
+            // Create file's path
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/instagram_img/", System.IO.Path.GetFileName(file.FileName));
+
+            // Upload file
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+
+            // Add new post
+            Posts post = new Posts();
+            post.User = id;
+            post.Image = System.IO.Path.GetFileName(file.FileName);
+            post.Status = status;
+            post.HashTag = hashtag;
+            post.LikeCount = 0;
+            post.FeedbackCount = 0;
+            post.CreatedDate = DateTime.Now;
+
+            _context.Add(post);
+            _context.SaveChanges();
+
+            //Update user
+            var user = _context.Users
+                .SingleOrDefault(m => m.Id == id);
+            user.PostsCount++;
+            _context.SaveChanges();
+        }
+
+        // GET: /Posts/IncreaseLike
         public string IncreaseLike(int postID)
         {
             string userEmail = HttpContext.Session.GetString(SessionKey);
@@ -95,6 +147,7 @@ namespace InstagramClone.Controllers
             }
         }
 
+        // GET: /Posts/IsLike
         public bool IsLike(int PostID)
         {
             string userEmail = HttpContext.Session.GetString(SessionKey);
@@ -118,6 +171,8 @@ namespace InstagramClone.Controllers
                 return false;
             }
         }
+
+        // GET: /Posts/IncreaseFollower
         public string IncreaseFollower(int followerID)
         {
             // Check Follow exists
@@ -187,6 +242,7 @@ namespace InstagramClone.Controllers
             }
         }
 
+        // GET: /Posts/IsFollow
         public bool IsFollow(int followid)
         {
             string userEmail = HttpContext.Session.GetString(SessionKey);
@@ -210,127 +266,5 @@ namespace InstagramClone.Controllers
                 return false;
             }
         }
-
-        //// GET: Posts
-        //public async Task<IActionResult> Index()
-        //{
-        //    var instagramDBContext = _context.Posts.Include(p => p.UserNavigation);
-        //    return View(await instagramDBContext.ToListAsync());
-        //}
-
-
-
-
-        //// GET: Posts/Create
-        //public IActionResult Create()
-        //{
-        //    ViewData["User"] = new SelectList(_context.Users, "Id", "DisplayName");
-        //    return View();
-        //}
-
-        //// POST: Posts/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,User,Image,Status,HashTag,LikeCount,FeedbackCount,CreatedDate")] Posts posts)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(posts);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["User"] = new SelectList(_context.Users, "Id", "DisplayName", posts.User);
-        //    return View(posts);
-        //}
-
-        //// GET: Posts/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var posts = await _context.Posts.SingleOrDefaultAsync(m => m.Id == id);
-        //    if (posts == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewData["User"] = new SelectList(_context.Users, "Id", "DisplayName", posts.User);
-        //    return View(posts);
-        //}
-
-        //// POST: Posts/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,User,Image,Status,HashTag,LikeCount,FeedbackCount,CreatedDate")] Posts posts)
-        //{
-        //    if (id != posts.Id)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(posts);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!PostsExists(posts.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["User"] = new SelectList(_context.Users, "Id", "DisplayName", posts.User);
-        //    return View(posts);
-        //}
-
-        //// GET: Posts/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var posts = await _context.Posts
-        //        .Include(p => p.UserNavigation)
-        //        .SingleOrDefaultAsync(m => m.Id == id);
-        //    if (posts == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(posts);
-        //}
-
-        //// POST: Posts/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var posts = await _context.Posts.SingleOrDefaultAsync(m => m.Id == id);
-        //    _context.Posts.Remove(posts);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        //private bool PostsExists(int id)
-        //{
-        //    return _context.Posts.Any(e => e.Id == id);
-        //}
     }
 }

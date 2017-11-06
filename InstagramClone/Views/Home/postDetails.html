@@ -1,4 +1,4 @@
-<!-- 
+﻿<!-- 
   Group information:
   
   Student 1:
@@ -33,19 +33,19 @@
         var id = window.location.href.split("=")[1];
         Promise.resolve()
         .then(() => {
-          return $.post('/server/searchPost.php', {id: id});
+            return $.post('/Posts/SearchPost', {id: id});
         })
         .then((post) => {
           setPostContent(post);
         })
           
         function setPostContent(post) {
-          var postContent = post[0];
-          $('#status').html(postContent.status);
-          $('#hashTag').html(postContent.hashTag);
-          $('#image').attr("src","../img/instagram_img/" + postContent.image);
-          $('#likeCount').html(postContent.likeCount);
-          $('#feedbackCount').html(postContent.feedbackCount);
+            var postContent = JSON.parse(post);
+          $('#status').html(postContent.Status);
+          $('#hashTag').html(postContent.HashTag);
+          $('#image').attr("src","/img/instagram_img/" + postContent.Image);
+          $('#likeCount').html(postContent.LikeCount);
+          $('#feedbackCount').html(postContent.FeedbackCount);
         }
       }
       </script>
