@@ -234,7 +234,7 @@ namespace InstagramClone.Controllers
                  * references sources: stackoverflow.com/questions/32260/sending-email-in-net-through-gmail  
                  */
                 string SendersAddress = "recievewebdesign@gmail.com";            
-                string ReceiversAddress = "hieutrantvvn2006@gmail.com";              
+                string ReceiversAddress = email;              
                 const string SendersPassword = "recievewebdesign123@";    
                 string subject = "Password Recovery";
                 string host = HttpContext.Request.Host.ToString();
@@ -253,16 +253,19 @@ namespace InstagramClone.Controllers
                         Port = 587,
                         EnableSsl = true,
                         DeliveryMethod = SmtpDeliveryMethod.Network,
+                        Timeout = 20000,
                         Credentials = new NetworkCredential(SendersAddress, SendersPassword)                     
                     };
                     MailMessage message = new MailMessage(SendersAddress, ReceiversAddress, subject, body);
                     smtp.Send(message);
+                    return true;
                 }
                 catch (Exception ex)
                 {
                     string error = ex.Message;
+                    return false;
                 }
-                return true;
+               
             }
             else
             {
@@ -298,7 +301,7 @@ namespace InstagramClone.Controllers
                         // commit change
                         _context.SaveChanges();
                     }
-                    Response.Redirect("../Home/LoginAndRegistration");
+                    Response.Redirect("../Home/Index");
                 }
                 else
                 {
@@ -312,9 +315,13 @@ namespace InstagramClone.Controllers
         }
 
         // Users/Logout
-        public bool Logout()
+        public async Task<bool> Logout()
         {
             HttpContext.Session.SetString(SessionKey, "");
+
+            await HttpContext.SignOutAsync(
+                     scheme: "FiverSecurityScheme");
+
             return true;
         }
     }

@@ -11,7 +11,8 @@ namespace InstagramClone.Controllers
 {
     public class common
     {
-     
+
+        //Reference: https://stackoverflow.com/questions/3984138/hash-string-in-c-sharp
         public static string HashPassword(string password)
         {
             var sha1 = SHA1.Create();

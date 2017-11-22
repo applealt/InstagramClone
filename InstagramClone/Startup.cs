@@ -24,12 +24,11 @@ namespace InstagramClone
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication("FiverSecurityScheme")
-                
+            // references: https://www.codeproject.com/Articles/1205161/ASP-NET-Core-Cookie-Authentication
+            services.AddAuthentication("FiverSecurityScheme")               
                   .AddCookie("FiverSecurityScheme", options =>
                   {
-                     // options.AccessDeniedPath = new PathString("/Security/Access");
-                    
+                     // options.AccessDeniedPath = new PathString("/Security/Access");                   
                       options.LoginPath = new PathString("/Home/Index");
                   });
 

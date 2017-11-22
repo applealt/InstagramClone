@@ -25,18 +25,21 @@ namespace InstagramClone.Controllers
         public IActionResult Post()
         {
             return View("/Views/Home/index.html");
-        }        
+        }
 
+        [Authorize]
         public IActionResult PostDetails()
         {
             return View("/Views/Home/postDetails.html");
         }
 
+        [Authorize]
         public IActionResult PostList()
         {
             return View("/Views/Home/postList.html");
         }
 
+        [Authorize]
         public IActionResult Upload()
         {
             return View("/Views/Home/upload.html");
