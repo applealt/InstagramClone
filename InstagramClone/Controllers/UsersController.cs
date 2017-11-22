@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using System.Net.Mail;
 using System.Net;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace InstagramClone.Controllers
 {
@@ -115,7 +117,8 @@ namespace InstagramClone.Controllers
         }
 
         // Users/Login
-        public bool Login(string email, string password)
+        [HttpPost]
+        public async Task<bool> Login(string email, string password)
         {
             var users = _context.Users
                   .Where(m => m.Email == email)
@@ -128,6 +131,31 @@ namespace InstagramClone.Controllers
                 {
                     // Save session
                     HttpContext.Session.SetString(SessionKey, email);
+                    // create claims
+                    List<Claim> claims = new List<Claim>
+
+                    {
+                        new Claim(ClaimTypes.Name, "Sean Connery"),
+                        new Claim(ClaimTypes.Email, email)
+                    };
+
+                    // create identity
+                    ClaimsIdentity identity = new ClaimsIdentity(claims, "cookie");
+
+                    // create principal
+                    ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+
+                    // sign-in
+                    try
+                    {
+                        await HttpContext.SignInAsync(
+                                scheme: "FiverSecurityScheme",
+                                principal: principal);
+                      
+                    }catch (Exception ex)
+                    {
+                        string error = ex.Message;
+                    }
                     return true;
                 }
                 else

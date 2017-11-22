@@ -42,12 +42,11 @@
                 else if (email.length > 0 && password.length > 0) {
                     Promise.resolve()
                         .then(function () {
-                            return $.post('/Users/Login', { email: email, password: password });
-                            //   return $.post('/Posts/GetPostsContent', { id: id, max: 4});
+                            return $.post('/Users/Login', { email: email, password: password });                       
                         })
                         .then(function (auth) {
                             if (auth) {
-                                window.location.replace('../Home/Index');
+                                window.location.replace('../Home/Post');
                             } else {
                                 $('#error').html('Invalid email or password!');
                             }

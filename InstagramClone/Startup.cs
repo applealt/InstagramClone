@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using InstagramClone.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace InstagramClone
 {
@@ -23,7 +24,16 @@ namespace InstagramClone
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddAuthentication("FiverSecurityScheme")
+                
+                  .AddCookie("FiverSecurityScheme", options =>
+                  {
+                     // options.AccessDeniedPath = new PathString("/Security/Access");
+                    
+                      options.LoginPath = new PathString("/Home/Index");
+                  });
+
+            
 
             services.AddDbContext<InstagramDBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -32,6 +42,8 @@ namespace InstagramClone
             services.AddDistributedMemoryCache();
             // The Session State TempData Provider requires adding the session state service
             services.AddSession();
+
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,11 +60,14 @@ namespace InstagramClone
             }
             app.UseStaticFiles();
             app.UseSession();
+            app.UseAuthentication();
+            app.UseMvcWithDefaultRoute();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=LoginAndRegistration}");
+                    template: "{controller=Home}/{action=Index}");
             });
         }
     }

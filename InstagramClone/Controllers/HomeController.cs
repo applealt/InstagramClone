@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using InstagramClone.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InstagramClone.Controllers
 {
@@ -12,7 +13,7 @@ namespace InstagramClone.Controllers
     {
         public IActionResult Index()
         {
-            return View("/Views/Home/index.html");
+            return View("/Views/Home/loginAndRegistration.html");
         }
 
         public IActionResult ForgotPassword()
@@ -20,9 +21,10 @@ namespace InstagramClone.Controllers
             return View("/Views/Home/forgotPassword.html");
         }
 
-        public IActionResult LoginAndRegistration()
+        [Authorize]
+        public IActionResult Post()
         {
-            return View("/Views/Home/loginAndRegistration.html");
+            return View("/Views/Home/index.html");
         }        
 
         public IActionResult PostDetails()
