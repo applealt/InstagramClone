@@ -11,6 +11,8 @@ using System.Net.Mail;
 using System.Net;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using System.Web;
+
 
 namespace InstagramClone.Controllers
 {
@@ -131,11 +133,11 @@ namespace InstagramClone.Controllers
                 {
                     // Save session
                     HttpContext.Session.SetString(SessionKey, email);
+
+                    // reference: https://www.codeproject.com/Articles/1205161/ASP-NET-Core-Cookie-Authentication
                     // create claims
                     List<Claim> claims = new List<Claim>
-
                     {
-                        new Claim(ClaimTypes.Name, "Sean Connery"),
                         new Claim(ClaimTypes.Email, email)
                     };
 
@@ -208,7 +210,7 @@ namespace InstagramClone.Controllers
                  .Where(m => m.Email == email)
                  .ToList<Users>();
 
-            if(users.Count != 0)
+            if (users.Count != 0)
             {
                 // insert records into PasswordRecoveries
                 var newPasswordRecord = new PasswordRecoveries();
@@ -233,9 +235,9 @@ namespace InstagramClone.Controllers
                  * send email
                  * references sources: stackoverflow.com/questions/32260/sending-email-in-net-through-gmail  
                  */
-                string SendersAddress = "recievewebdesign@gmail.com";            
-                string ReceiversAddress = email;              
-                const string SendersPassword = "recievewebdesign123@";    
+                string SendersAddress = "recievewebdesign@gmail.com";
+                string ReceiversAddress = email;
+                const string SendersPassword = "recievewebdesign123@";
                 string subject = "Password Recovery";
                 string host = HttpContext.Request.Host.ToString();
                 string body = "Dear " + users[0].FirstName + " " + users[0].LastName + "," + "\n \n";
@@ -253,25 +255,23 @@ namespace InstagramClone.Controllers
                         Port = 587,
                         EnableSsl = true,
                         DeliveryMethod = SmtpDeliveryMethod.Network,
-                        Timeout = 20000,
-                        Credentials = new NetworkCredential(SendersAddress, SendersPassword)                     
+                        Credentials = new NetworkCredential(SendersAddress, SendersPassword)
                     };
                     MailMessage message = new MailMessage(SendersAddress, ReceiversAddress, subject, body);
                     smtp.Send(message);
-                    return true;
                 }
                 catch (Exception ex)
                 {
                     string error = ex.Message;
-                    return false;
                 }
-               
+                return true;
             }
             else
             {
                 return false;
             }
         }
+
 
         // Users/VerifyResetPassword
         public void VerifyResetPassword(string id)
