@@ -77,7 +77,7 @@ namespace InstagramClone.Controllers
         // Users/GetTopProfiles
         public string GetTopProfiles()
         {
-            List<Users> users = _context.Users.OrderBy(m => m.FollowersCount).Take(3).ToList<Users>();
+            List<Users> users = _context.Users.OrderByDescending(m => m.FollowersCount).Take(3).ToList<Users>();
             if (users == null)
             {
                 return NotFound().ToString();
