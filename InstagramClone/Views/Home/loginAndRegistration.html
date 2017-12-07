@@ -83,11 +83,10 @@
                                 $('#toggle').addClass('hide');
                                 $('#registerSuccess').html('Account created successfully!<br>');
                                 $.post('/Users/Login', { email: emailField, password: passwordField })
-                             //   $.post('/server/login.php', 'type=signin' + '&email=' + emailField + '&password=' + passwordField)
                                     .done((auth) => {
                                         if (auth) {
                                             $('#registerSuccess').append('Proceeding to site')
-                                            setTimeout(window.location.replace('Home/Index'), 3000);
+                                            setTimeout(window.location.replace('../Home/Post'), 3000);
                                         }
                                     })
                             }

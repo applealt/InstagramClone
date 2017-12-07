@@ -35,16 +35,6 @@
       // Function to load the contents of the page
       function loadPage() {
         Promise.resolve()
-        
-        //check session
-        //.then(function() {
-        //    return  $.post ('/server/session.php', 'type=checkSession');
-        // })
-        // .then(function(auth){
-        //    if(!auth.isValid) {
-        //          window.location.replace('loginAndRegistration.html');
-        //    } 
-        // })
         .then(() => {
             return $.post('/Users/GetUserProfile');
         })
@@ -220,7 +210,7 @@
         })
         .then(function (response) {
           var like = JSON.parse(response);
-          if (like.count > 0) {
+          if (like.count >= 0) {
             //jQuery provides a nice convenience method for easily setting the count to the value returned
             $('#' + likeCounttag).html(like.count);
           }
@@ -256,7 +246,7 @@
         })
           .then(function (response) {
           var user = JSON.parse(response);
-          if (user.FollowingCount > 0) {
+          if (user.FollowingCount >= 0) {
               $('#followingCount').html(user.FollowingCount);
           }
           if (user.result == "true") {

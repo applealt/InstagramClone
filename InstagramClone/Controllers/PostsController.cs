@@ -212,7 +212,7 @@ namespace InstagramClone.Controllers
 
                 // commit changes
                 _context.SaveChanges();
-               // array('result' => true, 'id' => $FollowID, 'followingCount' => $CurrentFollowingCount);
+
                 return JsonConvert.SerializeObject(new { result = "true", FollowingCount = followingCount });
                 
                 }
