@@ -1,11 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Security.Principal;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace InstagramClone.Controllers
 {
@@ -25,6 +19,7 @@ namespace InstagramClone.Controllers
             }
             return sb.ToString();
         }
+
         public static bool CheckPass(string secrect, string password)
         {
             string passwordHash = HashPassword(password);

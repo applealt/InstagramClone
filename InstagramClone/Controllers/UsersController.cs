@@ -11,7 +11,6 @@ using System.Net.Mail;
 using System.Net;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
-using System.Web;
 
 
 namespace InstagramClone.Controllers
